@@ -17,6 +17,6 @@ export function readFile(filename) {
 }
 
 export function writeFile(json) {
-  fs.writeFileSync('output.json', json);
+  fs.writeFileSync('output.json', JSON.stringify(json, null, '  '));
   console.log('File created: output.json'.green);
 }

@@ -34,5 +34,8 @@ export const SUPPORTED_HTTP_METHODS = [
   'get', 'post', 'put', 'delete', 'options',
 ];
 
-export const DEFAULT_GATEWAY_INTEGRATION = {};
+export const DEFAULT_GATEWAY_INTEGRATION = {
+  'passthroughBehavior': 'when_no_match',
+  'type': 'http'
+};
 

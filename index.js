@@ -1,34 +1,28 @@
 import _ from 'lodash';
-import { readFile, writeFile } from './app/fileUtils';
 import colors from 'colors';
+import { BASE_SWAGGER_DEFINITION } from './settings';
+import { readFile, writeFile } from './app/fileUtils';
 import {
-  STAGE_VARIABLES,
-  DEFAULT_RESPONSES,
-  DEFAULT_PRODUCES,
-  BASE_SWAGGER_DEFINITION,
-} from './settings';
+  generateMethodJson,
+  generateGatewayIntegrationJson,
+} from './app/generateJson';
 
-if (process.argv.length < 3) {
+if (process.argv.length != 3) {
   console.log('Usage: babel-node index <filename>'.red);
   process.exit(1);
+} else {
+  main();
 }
 
-const input = readFile(process.argv[2]);
-const output = BASE_SWAGGER_DEFINITION;
+function main() {
+  const input = readFile(process.argv[2]);
+  const output = BASE_SWAGGER_DEFINITION;
 
-_.forOwn(input, (value, key) => {
-  console.log(key, value);
-  output.paths[key] = {};
-});
+  // Generate JSON for each endpoint's methods
+  _.forOwn(input, (endpointObj, endpointKey) => {
+    output.paths[endpointKey] = generateMethodJson(endpointObj, endpointKey);
+  });
 
-// const currentAPI = JSON.parse(fs.readFileSync('api.json'));
-// Object.keys(currentAPI.paths).forEach((endpoint) => {
-//   console.log(currentAPI.paths[endpoint].get);
-// });
-
-dumpOutput();
-writeFile(output);
-
-function dumpOutput() {
   console.log(JSON.stringify(output, null, '  ').red);
+  writeFile(output);
 }
