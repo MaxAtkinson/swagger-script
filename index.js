@@ -23,7 +23,7 @@ function main() {
   output.paths['/.well-known/acme-challenge/{key}'] = LETSENCRYPT_ENDPOINT;
   _.forOwn(input, (val, endpoint) => {
     console.log(`Creating '${endpoint}'...`.blue);
-    output.paths[endpoint] = generateJson(val, endpoint)
+    output.paths[endpoint.split('?')[0]] = generateJson(val, endpoint)
   });
 
   dumpOutput();

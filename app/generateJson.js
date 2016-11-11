@@ -57,7 +57,7 @@ function generateGatewayIntegrationJson(endpoint, addTo, methodObj, methodKey, p
     throw new Error(`Provide a valid addTo property for each HTTP route.
       One of: ${Object.keys(STAGE_VARIABLES)}`.red);
   }
-  json.uri = STAGE_VARIABLES[addTo] + endpoint;
+  json.uri = STAGE_VARIABLES[addTo] + endpoint.split('?')[0];
   json.httpMethod = methodKey.toUpperCase();
   json.requestParameters = generateRequestParameterJson(params);
   json.responses = methodObj.responses || json.responses;
