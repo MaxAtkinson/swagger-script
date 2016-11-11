@@ -13,7 +13,7 @@ Script for generating AWS API Gateway Swagger JSON.
 ```json
 {
   "/api/{someParam}/route/{someOtherParam}?requiredParam=true&optionalParam=false": {
-    "addTo": "products-api", // See settings.js
+    "addTo": "products-api",
     "requiresAuth": "true",
     "methods": {
       "get": {},
