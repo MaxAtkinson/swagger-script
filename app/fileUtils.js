@@ -7,13 +7,8 @@ function formatFileName(filename) {
 }
 
 export function readFile(filename) {
-  filename = formatFileName(filename);
   console.log(`Reading file: ${filename}...`.green);
-  try {
-    return JSON.parse(fs.readFileSync(filename));
-  } catch (err) {
-    throw err;
-  }
+  return JSON.parse(fs.readFileSync(formatFileName(filename)));
 }
 
 export function writeFile(json) {

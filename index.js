@@ -2,10 +2,7 @@ import _ from 'lodash';
 import colors from 'colors';
 import { BASE_SWAGGER_DEFINITION } from './settings';
 import { readFile, writeFile } from './app/fileUtils';
-import {
-  generateMethodJson,
-  generateGatewayIntegrationJson,
-} from './app/generateJson';
+import generateJson from './app/generateJson';
 
 if (process.argv.length != 3) {
   console.log('Usage: babel-node index <filename>'.red);
@@ -18,9 +15,8 @@ function main() {
   const input = readFile(process.argv[2]);
   const output = BASE_SWAGGER_DEFINITION;
 
-  // Generate JSON for each endpoint's methods
-  _.forOwn(input, (endpointObj, endpointKey) => {
-    output.paths[endpointKey] = generateMethodJson(endpointObj, endpointKey);
+  _.forOwn(input, (val, endpoint) => {
+    output.paths[endpoint] = generateJson(val, endpoint)
   });
 
   console.log(JSON.stringify(output, null, '  ').red);

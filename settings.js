@@ -1,7 +1,7 @@
 export const BASE_SWAGGER_DEFINITION = {
   'swagger': '2.0',
   'info': {
-    'version': '2016-11-09T12:52:01Z',
+    'version': new Date().toISOString(),
     'title': '  MRM Brand'
   },
   'host': 'dev.mrmbrand-apis.net',
@@ -20,10 +20,58 @@ export const STAGE_VARIABLES = {
 };
 
 export const DEFAULT_RESPONSES = {
-  '200': {},
-  '401': {},
-  '403': {},
-  '500': {},
+  '200': {
+    'description': '200 response',
+    'schema': {
+      '$ref': '#/definitions/Empty'
+    },
+    'headers': {
+      'Access-Control-Allow-Origin': {
+        'type': 'string'
+      }
+    }
+  },
+  '401': {
+    'description': '401 response',
+    'headers': {
+      'Access-Control-Allow-Origin': {
+        'type': 'string'
+      }
+    }
+  },
+  '403': {
+    'description': '403 response',
+    'headers': {
+      'Access-Control-Allow-Origin': {
+        'type': 'string'
+      }
+    }
+  },
+  '404': {
+    'description': '404 response',
+    'headers': {
+      'Access-Control-Allow-Origin': {
+        'type': 'string'
+      }
+    }
+  },
+  '500': {
+    'description': '500 response',
+    'headers': {
+      'Access-Control-Allow-Origin': {
+        'type': 'string'
+      }
+    }
+  },
+};
+
+export const DEFAULT_PARAMETERS = [];
+
+export const AUTH_PARAMETER = {
+  'name': 'Authorization',
+  'in': 'header',
+  'required': true,
+  'type': 'string',
 };
 
 export const DEFAULT_PRODUCES = [
@@ -36,6 +84,38 @@ export const SUPPORTED_HTTP_METHODS = [
 
 export const DEFAULT_GATEWAY_INTEGRATION = {
   'passthroughBehavior': 'when_no_match',
-  'type': 'http'
+  'type': 'http',
+  'responses': {
+    '401': {
+      'statusCode': '401',
+      'responseParameters': {
+        'method.response.header.Access-Control-Allow-Origin': '\'*\''
+      }
+    },
+    '403': {
+      'statusCode': '403',
+      'responseParameters': {
+        'method.response.header.Access-Control-Allow-Origin': '\'*\''
+      }
+    },
+    '404': {
+      'statusCode':  '404',
+      'responseParameters': {
+        'method.response.header.Access-Control-Allow-Origin': '\'*\''
+      }
+    },
+    'default': {
+      'statusCode': '200',
+      'responseParameters': {
+        'method.response.header.Access-Control-Allow-Origin': '\'*\''
+      }
+    },
+    '5\\d{2}': {
+      'statusCode': '500',
+      'responseParameters': {
+        'method.response.header.Access-Control-Allow-Origin': '\'*\''
+      }
+    }
+  },
 };
 
