@@ -6,7 +6,6 @@ import querystring from 'querystring';
 */
 export function extractPathParams(endpoint) {
   const matches = endpoint.match(/\{.*?\}/g);
-
   if (!matches) return [];
   return matches.map((param) => {
     return {
