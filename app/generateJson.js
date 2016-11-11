@@ -22,6 +22,15 @@ export default function generateMethodJson(input, endpoint) {
     if (SUPPORTED_HTTP_METHODS.indexOf(methodKey.toLowerCase()) == -1) {
       throw new Error('Unsupported HTTP method' + methodKey.red);
     }
+    if (methodObj.responses) {
+      Object.keys(methodObj.responses).map((code) => {
+        methodObj.responses[code].headers = {
+          'Access-Control-Allow-Origin': {
+            'type': 'string'
+          }
+        };
+      });
+    }
     methodObj.responses = methodObj.responses || DEFAULT_RESPONSES;
     json[methodKey] = {};
     json[methodKey].parameters = parameters || DEFAULT_PARAMETERS;
