@@ -70,10 +70,24 @@ function generateGatewayIntegrationJson(endpoint, addTo, methodObj, methodKey, p
     const requestParams = {};
 
     params.map((param) => {
-      const key = `integration.request.${param.in}.${param.name}`;
-      const val = `method.request.${param.in}.${param.name}`;
+      const key = `integration.request.${param.in == 'query' ? 'querystring' : param.in}.${param.name}`;
+      const val = `method.request.${param.in == 'query' ? 'querystring' : param.in}.${param.name}`;
       requestParams[key] = val;
     });
     return requestParams;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

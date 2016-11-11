@@ -31,6 +31,6 @@ function main() {
 
   function dumpOutput() {
     console.log(JSON.stringify(output, null, '  ').red);
-    console.log(`${Object.keys(output.paths).length} new routes added.`.green);
+    console.log(`${Object.keys(output.paths).length - 1} new routes added.`.green);
   }
 }
