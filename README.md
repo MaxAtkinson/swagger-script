@@ -13,7 +13,7 @@ Script for generating AWS API Gateway Swagger JSON.
 ```json
 {
   "/api/{someParam}/route/{someOtherParam}?requiredParam=true&optionalParam=false": {
-    "addTo": "stage-variable-key (see settings.js)",
+    "addTo": "products-api", // See settings.js
     "requiresAuth": "true",
     "methods": {
       "get": {},
@@ -30,7 +30,7 @@ Script for generating AWS API Gateway Swagger JSON.
 {
   "swagger": "2.0",
   "info": {
-    "version": "2016-11-11T12:12:13.558Z",
+    "version": "2016-11-11T12:16:18.702Z",
     "title": "MRM Brand"
   },
   "host": "dev.mrmbrand-apis.net",
@@ -79,29 +79,29 @@ Script for generating AWS API Gateway Swagger JSON.
         }
       }
     },
-    "/api/{ver}/brands/{id}?name=true&pop=false": {
+    "/api/{someParam}/route/{someOtherParam}?requiredParam=true&optionalParam=false": {
       "get": {
         "parameters": [
           {
-            "name": "ver",
+            "name": "someParam",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "id",
+            "name": "someOtherParam",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "name",
+            "name": "requiredParam",
             "in": "query",
             "required": true,
             "type": "string"
           },
           {
-            "name": "pop",
+            "name": "optionalParam",
             "in": "query",
             "required": false,
             "type": "string"
@@ -196,13 +196,13 @@ Script for generating AWS API Gateway Swagger JSON.
               }
             }
           },
-          "uri": "https://${stageVariables.bespokeMenusUrl}/api/{ver}/brands/{id}?name=true&pop=false",
+          "uri": "https://${stageVariables.productAPIUrl}/api/{someParam}/route/{someOtherParam}?requiredParam=true&optionalParam=false",
           "httpMethod": "GET",
           "requestParameters": {
-            "integration.request.path.ver": "method.request.path.ver",
-            "integration.request.path.id": "method.request.path.id",
-            "integration.request.query.name": "method.request.query.name",
-            "integration.request.query.pop": "method.request.query.pop",
+            "integration.request.path.someParam": "method.request.path.someParam",
+            "integration.request.path.someOtherParam": "method.request.path.someOtherParam",
+            "integration.request.query.requiredParam": "method.request.query.requiredParam",
+            "integration.request.query.optionalParam": "method.request.query.optionalParam",
             "integration.request.header.Authorization": "method.request.header.Authorization"
           }
         }
@@ -210,25 +210,25 @@ Script for generating AWS API Gateway Swagger JSON.
       "post": {
         "parameters": [
           {
-            "name": "ver",
+            "name": "someParam",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "id",
+            "name": "someOtherParam",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "name",
+            "name": "requiredParam",
             "in": "query",
             "required": true,
             "type": "string"
           },
           {
-            "name": "pop",
+            "name": "optionalParam",
             "in": "query",
             "required": false,
             "type": "string"
@@ -323,13 +323,13 @@ Script for generating AWS API Gateway Swagger JSON.
               }
             }
           },
-          "uri": "https://${stageVariables.bespokeMenusUrl}/api/{ver}/brands/{id}?name=true&pop=false",
+          "uri": "https://${stageVariables.productAPIUrl}/api/{someParam}/route/{someOtherParam}?requiredParam=true&optionalParam=false",
           "httpMethod": "POST",
           "requestParameters": {
-            "integration.request.path.ver": "method.request.path.ver",
-            "integration.request.path.id": "method.request.path.id",
-            "integration.request.query.name": "method.request.query.name",
-            "integration.request.query.pop": "method.request.query.pop",
+            "integration.request.path.someParam": "method.request.path.someParam",
+            "integration.request.path.someOtherParam": "method.request.path.someOtherParam",
+            "integration.request.query.requiredParam": "method.request.query.requiredParam",
+            "integration.request.query.optionalParam": "method.request.query.optionalParam",
             "integration.request.header.Authorization": "method.request.header.Authorization"
           }
         }
