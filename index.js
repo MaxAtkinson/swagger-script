@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import colors from 'colors';
-import { BASE_SWAGGER_DEFINITION } from './settings';
+import { BASE_SWAGGER_DEFINITION, LETSENCRYPT_ENDPOINT } from './settings';
 import { readFile, writeFile } from './app/fileUtils';
 import generateJson from './app/generateJson';
 
@@ -11,14 +11,26 @@ if (process.argv.length != 3) {
   main();
 }
 
+/*
+  Initialises the output with the letsencrypt endpoint and proceeds
+  to iterate over each endpoint defined in the input file, generating
+  JSON for each.
+*/
 function main() {
   const input = readFile(process.argv[2]);
   const output = BASE_SWAGGER_DEFINITION;
 
+  output.paths['/.well-known/acme-challenge/{key}'] = LETSENCRYPT_ENDPOINT;
   _.forOwn(input, (val, endpoint) => {
+    console.log(`Creating '${endpoint}'...`.blue);
     output.paths[endpoint] = generateJson(val, endpoint)
   });
 
-  console.log(JSON.stringify(output, null, '  ').red);
+  dumpOutput();
   writeFile(output);
+
+  function dumpOutput() {
+    console.log(JSON.stringify(output, null, '  ').red);
+    console.log(`${Object.keys(output.paths).length} new routes added.`.green);
+  }
 }

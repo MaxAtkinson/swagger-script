@@ -1,24 +1,66 @@
+/*
+  Base object for the final output - 'paths' property is populated.
+*/
 export const BASE_SWAGGER_DEFINITION = {
   'swagger': '2.0',
   'info': {
     'version': new Date().toISOString(),
-    'title': '  MRM Brand'
+    'title': 'MRM Brand'
   },
   'host': 'dev.mrmbrand-apis.net',
   'schemes': [
     'https'
   ],
-  'paths': {}
+  'paths': {},
+  'definitions': {
+    'Empty': {
+      'type': 'object'
+    }
+  },
 };
 
+/*
+  URLs for the API gateway extension.
+*/
 const PRODUCTS_API_URL = 'https://${stageVariables.productAPIUrl}';
 const BESPOKE_MENUS_URL = 'https://${stageVariables.bespokeMenusUrl}';
-
 export const STAGE_VARIABLES = {
   'products-api': PRODUCTS_API_URL,
   'bespoke-menus': BESPOKE_MENUS_URL,
 };
 
+/*
+  Authorizaton header parameter object.
+*/
+export const AUTH_PARAMETER = {
+  'name': 'Authorization',
+  'in': 'header',
+  'required': true,
+  'type': 'string',
+};
+
+/*
+  Default parameters.
+*/
+export const DEFAULT_PARAMETERS = [];
+
+/*
+  Supported HTTP methods, used for validation.
+*/
+export const SUPPORTED_HTTP_METHODS = [
+  'get', 'post', 'put', 'delete', 'options',
+];
+
+/*
+  Default response headers.
+*/
+export const DEFAULT_PRODUCES = [
+  'application/json',
+];
+
+/*
+  Default HTTP responses from routes.
+*/
 export const DEFAULT_RESPONSES = {
   '200': {
     'description': '200 response',
@@ -65,23 +107,9 @@ export const DEFAULT_RESPONSES = {
   },
 };
 
-export const DEFAULT_PARAMETERS = [];
-
-export const AUTH_PARAMETER = {
-  'name': 'Authorization',
-  'in': 'header',
-  'required': true,
-  'type': 'string',
-};
-
-export const DEFAULT_PRODUCES = [
-  'application/json',
-];
-
-export const SUPPORTED_HTTP_METHODS = [
-  'get', 'post', 'put', 'delete', 'options',
-];
-
+/*
+  Default gateway integration settings.
+*/
 export const DEFAULT_GATEWAY_INTEGRATION = {
   'passthroughBehavior': 'when_no_match',
   'type': 'http',
@@ -119,3 +147,47 @@ export const DEFAULT_GATEWAY_INTEGRATION = {
   },
 };
 
+/*
+  Endpoint for LetsEncrypt which must be added for HTTPS.
+*/
+export const LETSENCRYPT_ENDPOINT = {
+  'get': {
+    'consumes': [
+      'application/json'
+    ],
+    'produces': [
+      'text/plain'
+    ],
+    'parameters': [
+      {
+        'name': 'key',
+        'in': 'path',
+        'required': true,
+        'type': 'string'
+      }
+    ],
+    'responses': {
+      '200': {
+        'description': '200 response',
+        'schema': {
+          '$ref': '#/definitions/Empty'
+        }
+      }
+    },
+    'x-amazon-apigateway-integration': {
+      'requestTemplates': {
+        'application/json': '{\'statusCode\': 200}'
+      },
+      'responses': {
+        'default': {
+          'statusCode': '200',
+          'responseTemplates': {
+            'text/plain': '#if($stageVariables.acme.startsWith($input.params(\'key\')))$stageVariables.acme#end\n'
+          }
+        }
+      },
+      'passthroughBehavior': 'when_no_match',
+      'type': 'mock'
+    }
+  }
+};
