@@ -1,11 +1,17 @@
 /*
+  Change this to your API name.
+*/
+const API_NAME = null;
+
+/*
   Base object for the final output - 'paths' property is populated.
 */
+const API_TIMESTAMP = new Date().toISOString();
 export const BASE_SWAGGER_DEFINITION = {
   'swagger': '2.0',
   'info': {
-    'version': new Date().toISOString(),
-    'title': 'MRM Brand'
+    'version': API_TIMESTAMP,
+    'title': API_NAME || API_TIMESTAMP
   },
   'host': 'dev.mrmbrand-apis.net',
   'schemes': [

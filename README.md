@@ -9,6 +9,7 @@ Script for generating AWS API Gateway Swagger JSON.
 - `npm install`
 
 ## Usage
+- Update the API_NAME constant in `settings.js`.
 - Create an input file in the format:
 ```json
 {
@@ -30,8 +31,8 @@ Script for generating AWS API Gateway Swagger JSON.
 {
   "swagger": "2.0",
   "info": {
-    "version": "2016-11-11T12:27:10.100Z",
-    "title": "MRM Brand"
+    "version": "1111-11-11T11:11:11.111Z",
+    "title": "YOUR_API_NAME"
   },
   "host": "dev.mrmbrand-apis.net",
   "schemes": [

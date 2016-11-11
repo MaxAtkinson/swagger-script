@@ -5,7 +5,9 @@ import querystring from 'querystring';
   and returns them in the swagger format.
 */
 export function extractPathParams(endpoint) {
-  return endpoint.match(/\{.*?\}/g).map((param) => {
+  const matches = endpoint.match(/\{.*?\}/g);
+  if (!matches) return [];
+  return matches.map((param) => {
     return {
       name: param.replace('{', '').replace('}', ''),
       in: 'path',
@@ -13,6 +15,7 @@ export function extractPathParams(endpoint) {
       type: 'string'
     };
   });
+  
 }
 
 /*
@@ -21,6 +24,7 @@ export function extractPathParams(endpoint) {
 */
 export function extractQueryParams(endpoint) {
   const queryParams = querystring.parse(endpoint.split('?')[1]);
+  if (!queryParams) return [];
   return Object.keys(queryParams).map((param) => {
     const required = (queryParams[param] == 'true') || false;
     return {
