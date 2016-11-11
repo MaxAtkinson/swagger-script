@@ -22,10 +22,11 @@ export default function generateMethodJson(input, endpoint) {
     if (SUPPORTED_HTTP_METHODS.indexOf(methodKey.toLowerCase()) == -1) {
       throw new Error('Unsupported HTTP method' + methodKey.red);
     }
+    methodObj.responses = methodObj.responses || DEFAULT_RESPONSES;
     json[methodKey] = {};
     json[methodKey].parameters = parameters || DEFAULT_PARAMETERS;
     json[methodKey].produces = methodObj.produces || DEFAULT_PRODUCES;
-    json[methodKey].responses = methodObj.responses || DEFAULT_RESPONSES;
+    json[methodKey].responses = methodObj.responses;
     json[methodKey]['x-amazon-apigateway-integration'] = methodObj['gateway-integration'] || 
       generateGatewayIntegrationJson(endpoint, input.addTo, methodObj, methodKey, parameters);
   });
@@ -60,7 +61,7 @@ function generateGatewayIntegrationJson(endpoint, addTo, methodObj, methodKey, p
   json.uri = STAGE_VARIABLES[addTo] + endpoint.split('?')[0];
   json.httpMethod = methodKey.toUpperCase();
   json.requestParameters = generateRequestParameterJson(params);
-  json.responses = methodObj.responses || json.responses;
+  json.responses = generateResponseJson(methodObj.responses);
   return json;
 
   /*
@@ -75,6 +76,29 @@ function generateGatewayIntegrationJson(endpoint, addTo, methodObj, methodKey, p
       requestParams[key] = val;
     });
     return requestParams;
+  }
+
+  /*
+    Generates the responses property for the extension from the method's responses.
+  */
+  function generateResponseJson(responses) {
+    const responseJson = {};
+    const statusCodes = Object.keys(responses);
+    const lowest = Math.min.apply(Math, statusCodes);
+
+    statusCodes.map((code) => {
+      responseJson[code] = {
+        statusCode: code
+      };
+    });
+    responseJson.default = {
+      statusCode: lowest,
+      responseParameters: {
+        'method.response.header.Access-Control-Allow-Origin': '\'*\''
+      }
+    }
+    delete responseJson[lowest];
+    return responseJson;
   }
 }
 

@@ -79,6 +79,14 @@ export const DEFAULT_RESPONSES = {
       }
     }
   },
+  '400': {
+    'description': '400 response',
+    'headers': {
+      'Access-Control-Allow-Origin': {
+        'type': 'string'
+      }
+    }
+  },
   '401': {
     'description': '401 response',
     'headers': {
