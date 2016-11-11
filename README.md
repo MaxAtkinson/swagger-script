@@ -23,14 +23,14 @@ Script for generating AWS API Gateway Swagger JSON.
 }
 ```
 - HTTP Responses will default to those defined in `settings.js` but can be overridden within the http method JSON.
-- `babel-node index <filename>`.
+- Run `babel-node index <filename>`.
 - The output file, `output.json` will be created in the current directory.
 - The above JSON will generate:
 ```json
 {
   "swagger": "2.0",
   "info": {
-    "version": "2016-11-11T11:54:19.646Z",
+    "version": "2016-11-11T12:12:13.558Z",
     "title": "MRM Brand"
   },
   "host": "dev.mrmbrand-apis.net",
@@ -80,38 +80,6 @@ Script for generating AWS API Gateway Swagger JSON.
       }
     },
     "/api/{ver}/brands/{id}?name=true&pop=false": {
-      "parameters": [
-        {
-          "name": "ver",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "name",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "pop",
-          "in": "query",
-          "required": false,
-          "type": "string"
-        },
-        {
-          "name": "Authorization",
-          "in": "header",
-          "required": true,
-          "type": "string"
-        }
-      ],
       "get": {
         "parameters": [
           {

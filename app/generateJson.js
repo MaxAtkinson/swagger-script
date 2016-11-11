@@ -15,20 +15,19 @@ import {
   each method defined in the input file.
 */
 export default function generateMethodJson(input, endpoint) {
-  const json = {
-    parameters: generateParameterJson(endpoint, input.requiresAuth),
-  };
+  const json = {};
+  const parameters = generateParameterJson(endpoint, input.requiresAuth);
 
   _.forOwn(input.methods, (methodObj, methodKey) => {
     if (SUPPORTED_HTTP_METHODS.indexOf(methodKey.toLowerCase()) == -1) {
       throw new Error('Unsupported HTTP method' + methodKey.red);
     }
     json[methodKey] = {};
-    json[methodKey].parameters = json.parameters || DEFAULT_PARAMETERS;
+    json[methodKey].parameters = parameters || DEFAULT_PARAMETERS;
     json[methodKey].produces = methodObj.produces || DEFAULT_PRODUCES;
     json[methodKey].responses = methodObj.responses || DEFAULT_RESPONSES;
     json[methodKey]['x-amazon-apigateway-integration'] = methodObj['gateway-integration'] || 
-      generateGatewayIntegrationJson(endpoint, input.addTo, methodObj, methodKey, json.parameters);
+      generateGatewayIntegrationJson(endpoint, input.addTo, methodObj, methodKey, parameters);
   });
   return json;
 }
