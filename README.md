@@ -30,7 +30,7 @@ Script for generating AWS API Gateway Swagger JSON.
 {
   "swagger": "2.0",
   "info": {
-    "version": "2016-11-11T12:16:18.702Z",
+    "version": "2016-11-11T12:27:10.100Z",
     "title": "MRM Brand"
   },
   "host": "dev.mrmbrand-apis.net",
@@ -79,7 +79,7 @@ Script for generating AWS API Gateway Swagger JSON.
         }
       }
     },
-    "/api/{someParam}/route/{someOtherParam}?requiredParam=true&optionalParam=false": {
+    "/api/{someParam}/route/{someOtherParam}": {
       "get": {
         "parameters": [
           {
@@ -196,7 +196,7 @@ Script for generating AWS API Gateway Swagger JSON.
               }
             }
           },
-          "uri": "https://${stageVariables.productAPIUrl}/api/{someParam}/route/{someOtherParam}?requiredParam=true&optionalParam=false",
+          "uri": "https://${stageVariables.productAPIUrl}/api/{someParam}/route/{someOtherParam}",
           "httpMethod": "GET",
           "requestParameters": {
             "integration.request.path.someParam": "method.request.path.someParam",
@@ -323,7 +323,7 @@ Script for generating AWS API Gateway Swagger JSON.
               }
             }
           },
-          "uri": "https://${stageVariables.productAPIUrl}/api/{someParam}/route/{someOtherParam}?requiredParam=true&optionalParam=false",
+          "uri": "https://${stageVariables.productAPIUrl}/api/{someParam}/route/{someOtherParam}",
           "httpMethod": "POST",
           "requestParameters": {
             "integration.request.path.someParam": "method.request.path.someParam",
