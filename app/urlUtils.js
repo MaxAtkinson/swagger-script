@@ -6,6 +6,7 @@ import querystring from 'querystring';
 */
 export function extractPathParams(endpoint) {
   const matches = endpoint.match(/\{.*?\}/g);
+
   if (!matches) return [];
   return matches.map((param) => {
     return {
@@ -15,7 +16,6 @@ export function extractPathParams(endpoint) {
       type: 'string'
     };
   });
-  
 }
 
 /*
@@ -23,8 +23,10 @@ export function extractPathParams(endpoint) {
   and returns them in the swagger format.
 */
 export function extractQueryParams(endpoint) {
-  const queryParams = querystring.parse(endpoint.split('?')[1]);
-  if (!queryParams) return [];
+  const inputQueryString = endpoint.split('?')[1]
+  if (!inputQueryString) return [];
+  const queryParams = querystring.parse(inputQueryString);
+
   return Object.keys(queryParams).map((param) => {
     const required = (queryParams[param] == 'true') || false;
     return {
