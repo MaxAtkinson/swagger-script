@@ -19,25 +19,34 @@ export default function generateMethodJson(input, endpoint) {
   const parameters = generateParameterJson(endpoint, input.requiresAuth);
 
   _.forOwn(input.methods, (methodObj, methodKey) => {
+    json[methodKey] = {};
     if (SUPPORTED_HTTP_METHODS.indexOf(methodKey.toLowerCase()) == -1) {
       throw new Error('Unsupported HTTP method' + methodKey.red);
     }
     if (methodObj.responses) {
-      Object.keys(methodObj.responses).map((code) => {
-        methodObj.responses[code].headers = {
-          'Access-Control-Allow-Origin': {
-            'type': 'string'
+      json[methodKey].responses = {};
+      methodObj.responses.map((code) => {
+        json[methodKey].responses[code] = {
+          'description': code + ' response',
+          'schema': {
+            '$ref': '#/definitions/Empty'
+          },
+          'headers': {
+            'Access-Control-Allow-Origin': {
+              'type': 'string'
+            }
           }
         };
       });
+      methodObj.responses = json[methodKey].responses;
+    } else {
+      json[methodKey].reponses = DEFAULT_RESPONSES;
+      methodObj.responses = DEFAULT_RESPONSES;
     }
-    methodObj.responses = methodObj.responses || DEFAULT_RESPONSES;
-    json[methodKey] = {};
     json[methodKey].parameters = parameters || DEFAULT_PARAMETERS;
     json[methodKey].produces = methodObj.produces || DEFAULT_PRODUCES;
-    json[methodKey].responses = methodObj.responses;
     json[methodKey]['x-amazon-apigateway-integration'] = methodObj['gateway-integration'] || 
-      generateGatewayIntegrationJson(endpoint, input.addTo, methodObj, methodKey, parameters);
+      generateGatewayIntegrationJson(input, methodObj, methodKey, parameters);
   });
   return json;
 }
@@ -60,14 +69,14 @@ function generateParameterJson(endpoint, requiresAuth) {
 /*
   Generates JSON for the API gateway integration extension.
 */
-function generateGatewayIntegrationJson(endpoint, addTo, methodObj, methodKey, params) {
+function generateGatewayIntegrationJson(input, methodObj, methodKey, params) {
   const json = { ...DEFAULT_GATEWAY_INTEGRATION };
 
-  if (Object.keys(STAGE_VARIABLES).indexOf(addTo) == -1) {
+  if (Object.keys(STAGE_VARIABLES).indexOf(input.addTo) == -1) {
     throw new Error(`Provide a valid addTo property for each HTTP route.
       One of: ${Object.keys(STAGE_VARIABLES)}`.red);
   }
-  json.uri = STAGE_VARIABLES[addTo] + endpoint.split('?')[0];
+  json.uri = STAGE_VARIABLES[input.addTo] + input.dest;
   json.httpMethod = methodKey.toUpperCase();
   json.requestParameters = generateRequestParameterJson(params);
   json.responses = generateResponseJson(methodObj.responses);
@@ -94,11 +103,16 @@ function generateGatewayIntegrationJson(endpoint, addTo, methodObj, methodKey, p
     const responseJson = {};
     const statusCodes = Object.keys(responses);
     const lowest = Math.min.apply(Math, statusCodes);
-
     statusCodes.map((code) => {
-      responseJson[code] = {
-        statusCode: code
-      };
+      if (code == '500') {
+        responseJson['5\\d{2}'] = {
+          statusCode: code
+        };
+      } else {
+        responseJson[code] = {
+          statusCode: code
+        };
+      }
     });
     responseJson.default = {
       statusCode: lowest,
@@ -110,17 +124,3 @@ function generateGatewayIntegrationJson(endpoint, addTo, methodObj, methodKey, p
     return responseJson;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

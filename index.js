@@ -26,7 +26,7 @@ function main() {
     output.paths[endpoint.split('?')[0]] = generateJson(val, endpoint)
   });
 
-  dumpOutput();
+  // dumpOutput();
   writeFile(output);
 
   function dumpOutput() {
