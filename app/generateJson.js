@@ -40,7 +40,7 @@ export default function generateMethodJson(input, endpoint) {
       });
       methodObj.responses = json[methodKey].responses;
     } else {
-      json[methodKey].reponses = DEFAULT_RESPONSES;
+      json[methodKey].responses = DEFAULT_RESPONSES;
       methodObj.responses = DEFAULT_RESPONSES;
     }
     json[methodKey].parameters = parameters || DEFAULT_PARAMETERS;
