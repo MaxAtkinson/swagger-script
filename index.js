@@ -20,7 +20,6 @@ function main() {
   const input = readFile(process.argv[2]);
   const output = BASE_SWAGGER_DEFINITION;
 
-  output.paths['/.well-known/acme-challenge/{key}'] = LETSENCRYPT_ENDPOINT;
   _.forOwn(input, (val, endpoint) => {
     console.log(`Creating '${endpoint}'...`.blue);
     output.paths[endpoint.split('?')[0]] = generateJson(val, endpoint)

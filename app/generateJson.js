@@ -43,6 +43,7 @@ export default function generateMethodJson(input, endpoint) {
       json[methodKey].responses = DEFAULT_RESPONSES;
       methodObj.responses = DEFAULT_RESPONSES;
     }
+    if (methodObj.consumes) json[methodKey].consumes = methodObj.consumes;
     json[methodKey].parameters = parameters || DEFAULT_PARAMETERS;
     json[methodKey].produces = methodObj.produces || DEFAULT_PRODUCES;
     json[methodKey]['x-amazon-apigateway-integration'] = methodObj['gateway-integration'] || 
