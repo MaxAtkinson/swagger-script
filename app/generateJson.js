@@ -47,7 +47,7 @@ export default function generateMethodJson(input, endpoint) {
     json[methodKey].parameters = parameters || DEFAULT_PARAMETERS;
     json[methodKey].produces = methodObj.produces || DEFAULT_PRODUCES;
     json[methodKey]['x-amazon-apigateway-integration'] = methodObj['gateway-integration'] || 
-      generateGatewayIntegrationJson(input, methodObj, methodKey, parameters);
+      generateGatewayIntegrationJson(endpoint, input, methodObj, methodKey, parameters);
   });
   return json;
 }
@@ -56,7 +56,7 @@ export default function generateMethodJson(input, endpoint) {
   Generates JSON for parameters taken from the path, querystring and
   the requiresAuth property.
 */
-function generateParameterJson(endpoint, requiresAuth) {
+function generateParameterJson(endpoint, requiresAuth = true) {
   const pathParams = extractPathParams(endpoint);
   const queryParams = extractQueryParams(endpoint);
   const params = pathParams.concat(queryParams);
@@ -70,14 +70,14 @@ function generateParameterJson(endpoint, requiresAuth) {
 /*
   Generates JSON for the API gateway integration extension.
 */
-function generateGatewayIntegrationJson(input, methodObj, methodKey, params) {
+function generateGatewayIntegrationJson(endpoint, input, methodObj, methodKey, params) {
   const json = { ...DEFAULT_GATEWAY_INTEGRATION };
 
   if (Object.keys(STAGE_VARIABLES).indexOf(input.addTo) == -1) {
     throw new Error(`Provide a valid addTo property for each HTTP route.
       One of: ${Object.keys(STAGE_VARIABLES)}`.red);
   }
-  json.uri = STAGE_VARIABLES[input.addTo] + input.dest;
+  json.uri = STAGE_VARIABLES[input.addTo] + (input.dest || endpoint.split('?')[0])
   json.httpMethod = methodKey.toUpperCase();
   json.requestParameters = generateRequestParameterJson(params);
   json.responses = generateResponseJson(methodObj.responses);
