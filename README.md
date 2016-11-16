@@ -134,7 +134,7 @@ Script for generating AWS API Gateway Swagger JSON.
         ],
         "produces": [
           "overridden/produces"
-        ]
+        ],
         "x-amazon-apigateway-integration": {
           "passthroughBehavior": "when_no_match",
           "type": "http",
