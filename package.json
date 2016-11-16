@@ -1,12 +1,12 @@
 {
   "name": "swagger-api-gateway",
   "version": "1.0.0",
-  "description": "",
+  "description": "Generates swagger for AWS API Gateway using some default settings which can be optionally overridden",
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register"
   },
-  "author": "",
+  "author": "Max Atkinson",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.7.6",

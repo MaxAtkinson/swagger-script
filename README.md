@@ -18,7 +18,9 @@ Script for generating AWS API Gateway Swagger JSON.
     "requiresAuth": "true",
     "methods": {
       "get": {},
-      "post": {}
+      "post": {
+        "responses": ["400"]
+      }
     }
   }
 }
@@ -31,98 +33,30 @@ Script for generating AWS API Gateway Swagger JSON.
 {
   "swagger": "2.0",
   "info": {
-    "version": "1111-11-11T11:11:11.111Z",
-    "title": "YOUR_API_NAME"
+    "version": "2016-11-16T16:35:14.985Z",
+    "title": "2016-11-16T16:35:14.985Z"
   },
   "host": "dev.mrmbrand-apis.net",
   "schemes": [
     "https"
   ],
   "paths": {
-    "/.well-known/acme-challenge/{key}": {
-      "get": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "text/plain"
-        ],
-        "parameters": [
-          {
-            "name": "key",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "requestTemplates": {
-            "application/json": "{'statusCode': 200}"
-          },
-          "responses": {
-            "default": {
-              "statusCode": "200",
-              "responseTemplates": {
-                "text/plain": "#if($stageVariables.acme.startsWith($input.params('key')))$stageVariables.acme#end\n"
-              }
-            }
-          },
-          "passthroughBehavior": "when_no_match",
-          "type": "mock"
-        }
-      }
-    },
     "/api/{someParam}/route/{someOtherParam}": {
       "get": {
-        "parameters": [
-          {
-            "name": "someParam",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "someOtherParam",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "requiredParam",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "optionalParam",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
         "responses": {
           "200": {
             "description": "200 response",
             "schema": {
               "$ref": "#/definitions/Empty"
             },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "400 response",
             "headers": {
               "Access-Control-Allow-Origin": {
                 "type": "string"
@@ -162,36 +96,62 @@ Script for generating AWS API Gateway Swagger JSON.
             }
           }
         },
+        "parameters": [
+          {
+            "name": "someParam",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "someOtherParam",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "requiredParam",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "optionalParam",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
         "x-amazon-apigateway-integration": {
           "passthroughBehavior": "when_no_match",
           "type": "http",
           "responses": {
+            "400": {
+              "statusCode": "400"
+            },
             "401": {
-              "statusCode": "401",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
+              "statusCode": "401"
             },
             "403": {
-              "statusCode": "403",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
+              "statusCode": "403"
             },
             "404": {
-              "statusCode": "404",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
-            },
-            "default": {
-              "statusCode": "200",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
+              "statusCode": "404"
             },
             "5\\d{2}": {
-              "statusCode": "500",
+              "statusCode": "500"
+            },
+            "default": {
+              "statusCode": 200,
               "responseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               }
@@ -202,13 +162,26 @@ Script for generating AWS API Gateway Swagger JSON.
           "requestParameters": {
             "integration.request.path.someParam": "method.request.path.someParam",
             "integration.request.path.someOtherParam": "method.request.path.someOtherParam",
-            "integration.request.query.requiredParam": "method.request.query.requiredParam",
-            "integration.request.query.optionalParam": "method.request.query.optionalParam",
+            "integration.request.querystring.requiredParam": "method.request.querystring.requiredParam",
+            "integration.request.querystring.optionalParam": "method.request.querystring.optionalParam",
             "integration.request.header.Authorization": "method.request.header.Authorization"
           }
         }
       },
       "post": {
+        "responses": {
+          "400": {
+            "description": "400 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
         "parameters": [
           {
             "name": "someParam",
@@ -244,81 +217,12 @@ Script for generating AWS API Gateway Swagger JSON.
         "produces": [
           "application/json"
         ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          },
-          "401": {
-            "description": "401 response",
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          },
-          "403": {
-            "description": "403 response",
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          },
-          "404": {
-            "description": "404 response",
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          },
-          "500": {
-            "description": "500 response",
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          }
-        },
         "x-amazon-apigateway-integration": {
           "passthroughBehavior": "when_no_match",
           "type": "http",
           "responses": {
-            "401": {
-              "statusCode": "401",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
-            },
-            "403": {
-              "statusCode": "403",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
-            },
-            "404": {
-              "statusCode": "404",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
-            },
             "default": {
-              "statusCode": "200",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
-            },
-            "5\\d{2}": {
-              "statusCode": "500",
+              "statusCode": 400,
               "responseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               }
@@ -329,8 +233,8 @@ Script for generating AWS API Gateway Swagger JSON.
           "requestParameters": {
             "integration.request.path.someParam": "method.request.path.someParam",
             "integration.request.path.someOtherParam": "method.request.path.someOtherParam",
-            "integration.request.query.requiredParam": "method.request.query.requiredParam",
-            "integration.request.query.optionalParam": "method.request.query.optionalParam",
+            "integration.request.querystring.requiredParam": "method.request.querystring.requiredParam",
+            "integration.request.querystring.optionalParam": "method.request.querystring.optionalParam",
             "integration.request.header.Authorization": "method.request.header.Authorization"
           }
         }
