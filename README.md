@@ -17,7 +17,11 @@ Script for generating AWS API Gateway Swagger JSON.
     "addTo": "products-api",
     "requiresAuth": "true",
     "methods": {
-      "get": {},
+      "get": {
+        "produces": [
+          "overridden/produces"
+        ]
+      },
       "post": {
         "responses": ["400"]
       }
@@ -129,8 +133,8 @@ Script for generating AWS API Gateway Swagger JSON.
           }
         ],
         "produces": [
-          "application/json"
-        ],
+          "overridden/produces"
+        ]
         "x-amazon-apigateway-integration": {
           "passthroughBehavior": "when_no_match",
           "type": "http",
