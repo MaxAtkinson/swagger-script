@@ -8,6 +8,7 @@ import {
   SUPPORTED_HTTP_METHODS,
   DEFAULT_PARAMETERS,
   AUTH_PARAMETER,
+  DEFAULT_OPTIONS_ENDPOINT
 } from '../settings';
 
 /*
@@ -17,6 +18,7 @@ import {
 export default function generateMethodJson(input, endpoint) {
   const json = {};
   const parameters = generateParameterJson(endpoint, input.requiresAuth);
+  if (input.cors != 'false') json.options = generateOptionsJson(Object.keys(input.methods));
 
   _.forOwn(input.methods, (methodObj, methodKey) => {
     json[methodKey] = {};
@@ -50,6 +52,14 @@ export default function generateMethodJson(input, endpoint) {
       generateGatewayIntegrationJson(endpoint, input, methodObj, methodKey, parameters);
   });
   return json;
+
+  function generateOptionsJson(methods) {
+    const optionsJson = _.cloneDeep(DEFAULT_OPTIONS_ENDPOINT);
+    const methodsString = methods.map(method => method.toUpperCase()).join();
+    optionsJson['x-amazon-apigateway-integration'].responses.default
+      .responseParameters['method.response.header.Access-Control-Allow-Methods'] = `\'${methodsString}\'`;
+    return optionsJson;
+  }
 }
 
 /*
@@ -71,7 +81,7 @@ function generateParameterJson(endpoint, requiresAuth = true) {
   Generates JSON for the API gateway integration extension.
 */
 function generateGatewayIntegrationJson(endpoint, input, methodObj, methodKey, params) {
-  const json = { ...DEFAULT_GATEWAY_INTEGRATION };
+  const json = _.cloneDeep(DEFAULT_GATEWAY_INTEGRATION);
 
   if (Object.keys(STAGE_VARIABLES).indexOf(input.addTo) == -1) {
     throw new Error(`Provide a valid addTo property for each HTTP route.

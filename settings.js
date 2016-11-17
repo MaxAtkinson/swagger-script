@@ -160,3 +160,51 @@ export const DEFAULT_GATEWAY_INTEGRATION = {
     }
   },
 };
+
+/*
+  Default CORS endpoint
+*/
+export const DEFAULT_OPTIONS_ENDPOINT = {
+  'consumes': [
+    'application/json'
+  ],
+  'produces': [
+    'application/json'
+  ],
+  'responses': {
+    '200': {
+      'description': '200 response',
+      'schema': {
+        '$ref': '#/definitions/Empty'
+      },
+      'headers': {
+        'Access-Control-Allow-Origin': {
+          'type': 'string'
+        },
+        'Access-Control-Allow-Methods': {
+          'type': 'string'
+        },
+        'Access-Control-Allow-Headers': {
+          'type': 'string'
+        }
+      }
+    }
+  },
+  'x-amazon-apigateway-integration': {
+    'passthroughBehavior': 'when_no_match',
+    'requestTemplates': {
+      'application/json': '{\'statusCode\': 200}'
+    },
+    'responses': {
+      'default': {
+        'statusCode': '200',
+        'responseParameters': {
+          'method.response.header.Access-Control-Allow-Methods': '',
+          'method.response.header.Access-Control-Allow-Headers': '\'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token\'',
+          'method.response.header.Access-Control-Allow-Origin': '\'*\''
+        }
+      }
+    },
+    'type': 'mock'
+  }
+};
