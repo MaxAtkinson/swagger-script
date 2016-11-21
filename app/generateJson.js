@@ -14,6 +14,8 @@ import {
 /*
   Main function - generates the JSON for each endpoint by iterating over
   each method defined in the input file.
+  If the CORS method is specified explicitly as 'false', the options
+  endpoint isn't added.
 */
 export default function generateMethodJson(input, endpoint) {
   const json = {};
@@ -36,7 +38,7 @@ export default function generateMethodJson(input, endpoint) {
           'headers': {
             'Access-Control-Allow-Origin': {
               'type': 'string'
-            }
+            } 
           }
         };
       });
@@ -55,7 +57,7 @@ export default function generateMethodJson(input, endpoint) {
 
   function generateOptionsJson(methods) {
     const optionsJson = _.cloneDeep(DEFAULT_OPTIONS_ENDPOINT);
-    const methodsString = methods.map(method => method.toUpperCase()).join();
+    const methodsString = methods.map(method => method.toUpperCase()).concat(['OPTIONS']).join();
     optionsJson['x-amazon-apigateway-integration'].responses.default
       .responseParameters['method.response.header.Access-Control-Allow-Methods'] = `\'${methodsString}\'`;
     return optionsJson;
@@ -109,6 +111,7 @@ function generateGatewayIntegrationJson(endpoint, input, methodObj, methodKey, p
 
   /*
     Generates the responses property for the extension from the method's responses.
+    Sets the lowest given response code as the default (same behaviour as API Gateway).
   */
   function generateResponseJson(responses) {
     const responseJson = {};
