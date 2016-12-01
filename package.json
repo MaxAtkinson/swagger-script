@@ -4,6 +4,7 @@
   "description": "Generates swagger for AWS API Gateway using some default settings which can be optionally overridden",
   "main": "index.js",
   "scripts": {
+    "start": "babel-node index",
     "test": "mocha --compilers js:babel-core/register"
   },
   "author": "Max Atkinson",

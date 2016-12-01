@@ -30,7 +30,7 @@ Script for generating AWS API Gateway Swagger JSON.
 }
 ```
 - HTTP Responses will default to those defined in `settings.js` but can be overridden within the http method JSON.
-- Run `babel-node index <filename>`.
+- Run `npm start -- <filename>`.
 - The output file, `output.json` will be created in the current directory.
 - The above JSON will generate:
 ```json
